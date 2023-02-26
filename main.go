@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	AuthController "my-go-wallet/controller/auth"
+	ReportsController "my-go-wallet/controller/reports"
 	TransactionController "my-go-wallet/controller/transaction"
 	UserController "my-go-wallet/controller/user"
 	"my-go-wallet/middleware"
@@ -27,12 +28,18 @@ func main() {
 	r.POST("/register", AuthController.Register)
 	r.POST("/login", AuthController.Login)
 
-	authorized := r.Group("/users", middleware.JWTAuthen())
-	authorized.GET("/getAll", UserController.GetAllUsers)
-	authorized.GET("/profile", UserController.Profile)
+	userGroup := r.Group("/users", middleware.JWTAuthen())
+	userGroup.GET("/getAllUsers", UserController.GetAllUsers)
+	userGroup.GET("/getUser", UserController.Profile)
 
-	authorized = r.Group("/transactions", middleware.JWTAuthen())
-	authorized.GET("/getAll", TransactionController.GetAllTransaction)
+	transactionsGroup := r.Group("/transactions", middleware.JWTAuthen())
+	transactionsGroup.GET("/getAllTransactions", TransactionController.GetAllTransactions)
+	transactionsGroup.POST("/insertTransaction", TransactionController.CreateTransaction)
+	transactionsGroup.DELETE("/deleteTransaction/:id", TransactionController.DeleteTransaction)
+	transactionsGroup.PUT("/updateTransaction/:id", TransactionController.UpdateTransaction)
+
+	reportGroup := r.Group("/reports", middleware.JWTAuthen())
+	reportGroup.POST("/getAllTransactionsByDate", ReportsController.GetAllTransactionByDate)
 
 	r.Use(cors.Default())
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")

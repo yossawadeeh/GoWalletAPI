@@ -1,6 +1,10 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type TypeTransaction struct {
 	gorm.Model
@@ -19,11 +23,11 @@ type CategoryTransaction struct {
 type Transaction struct {
 	gorm.Model
 
-	TransactionDate     string              `json:"transaction_date" binding:"required"`
-	Total               int                 `json:"total" binding:"required"`
+	TransactionDate     time.Time
+	Total               float32             `json:"total" binding:"required"`
 	Note                string              `json:"note" binding:"required"`
 	CategoryTransaction CategoryTransaction `gorm:"foreignKey:CategoryID"`
-	CategoryID          uint
-	User                User `gorm:"foreignKey:UserID"`
-	UserID              uint
+	CategoryID          uint                `json:"category_id"`
+	User                User                `gorm:"foreignKey:UserID"`
+	UserID              float64             `json:"user_id"`
 }
