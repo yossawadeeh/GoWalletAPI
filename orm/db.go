@@ -1,7 +1,6 @@
 package orm
 
 import (
-	"my-go-wallet/model"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -20,5 +19,5 @@ func InitDB() {
 	}
 
 	// Migrate the schema
-	Db.AutoMigrate(&model.User{})
+	//Db.AutoMigrate(&model.User{}, &model.TypeTransaction{}, &model.CategoryTransaction{}, &model.Transaction{})
 }
