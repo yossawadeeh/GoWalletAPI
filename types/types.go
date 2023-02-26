@@ -1,4 +1,4 @@
-package interfaceModel
+package types
 
 import (
 	"time"

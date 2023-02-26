@@ -2,9 +2,9 @@ package reports
 
 import (
 	"fmt"
-	"my-go-wallet/interfaceModel"
 	"my-go-wallet/model"
 	"my-go-wallet/orm"
+	"my-go-wallet/types"
 	"net/http"
 	"time"
 
@@ -14,13 +14,13 @@ import (
 func GetAllTransactionByDate(c *gin.Context) {
 	userId := c.MustGet("userId").(float64)
 
-	var transactionInput interfaceModel.TransactionByDateInterface
+	var transactionInput types.TransactionByDateInterface
 	if err := c.ShouldBindJSON(&transactionInput); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var transactions []interfaceModel.TransactionInterface
+	var transactions []types.TransactionInterface
 
 	fmt.Println(transactionInput.StartDate)
 	fmt.Println(transactionInput.EndDate)

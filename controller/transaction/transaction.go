@@ -1,9 +1,9 @@
 package transaction
 
 import (
-	"my-go-wallet/interfaceModel"
 	"my-go-wallet/model"
 	"my-go-wallet/orm"
+	"my-go-wallet/types"
 	"net/http"
 	"time"
 
@@ -12,7 +12,7 @@ import (
 
 func GetAllTransactions(c *gin.Context) {
 	userId := c.MustGet("userId").(float64)
-	var transactions []interfaceModel.TransactionInterface
+	var transactions []types.TransactionInterface
 
 	orm.Db.Model(model.Transaction{}).Where("user_id = ?", userId).Find(&transactions)
 	c.JSON(http.StatusOK, gin.H{
@@ -24,7 +24,7 @@ func GetAllTransactions(c *gin.Context) {
 func CreateTransaction(c *gin.Context) {
 	userId := c.MustGet("userId").(float64)
 
-	var transaction interfaceModel.TransactionInterface
+	var transaction types.TransactionInterface
 	if err := c.ShouldBindJSON(&transaction); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -82,7 +82,7 @@ func DeleteTransaction(c *gin.Context) {
 
 func UpdateTransaction(c *gin.Context) {
 	transactionId := c.Param("id")
-	var transaction interfaceModel.UpdateTransactionInterface
+	var transaction types.UpdateTransactionInterface
 	if err := c.ShouldBindJSON(&transaction); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
